@@ -1,0 +1,7 @@
+disk.img
+note
+
+*.o
+*.bin
+
+mbr
