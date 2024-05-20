@@ -1,10 +1,13 @@
-ENTRY(_mbr_entry)
+ENTRY(_kernel_entry)
 OUTPUT_FORMAT(binary)
 
 SECTIONS
 {
-        . = 0x7c00;
-        .text : {
+        . = 0x500;
+        .text :
+        {
+                *(.meta)
                 *(.text)
+                *(.data)
         }
 }

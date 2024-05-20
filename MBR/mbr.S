@@ -76,10 +76,15 @@ err_no_fat12:
         call print_str
         hlt
 
-err_faile_reading:
+err_failed_reading:
         mov $str_err_load, %si
         call print_str
         hlt
+
+err_failed_kernel:
+        mov $str_err_kernel, %si
+        call print_str
+        hlt   
 
 .lbd_sec_check:
         cmp $0xAA55, %bx
@@ -125,15 +130,25 @@ fat_load_root_dir:
         pop %dx
 
         int $0x13
-        jc err_faile_reading
+        jc err_failed_reading
 
         /* find and load kernel (sys80k.bin) */
         /* (root_dir_sector * sizof(sector)) + (sizof(sector) * offset_byte) + (root_dir_entries * sizeof(dir_entry)) */
 
+        /* load file from entry 0 */
         xor %cl, %cl
         movw disk_address_packet_store_addr, %bx
         mov $20, %dx
         call fat_load_file
+
+        mov $str_load_kernel, %si
+        call print_str
+
+        cmpw $0x6969, 0x500
+        jne err_failed_kernel
+
+        jmp 0x502
+
         hlt
         
 /* Load a file from the root directory
@@ -180,7 +195,7 @@ fat_load_file:
         mov (data_drive_number), %dx
 
         int $0x13
-        jc err_faile_reading
+        jc err_failed_reading
         
         /* pop size */
         pop %cx
@@ -209,19 +224,25 @@ data_drive_number:
 .word 0x0000
 
 str_loading:
-.asciz "======== Loading SYSTEM 80 ========\r\n"
+.asciz "======= Loading SYSTEM 80 =======\r\n"
 
 str_load_root:
-.asciz "Loading root directory\r\n"
+.asciz "> Enter root directory...\r\n"
+
+str_load_kernel:
+.asciz "> Loading kernel...\r\n"
 
 str_err_lba_ext:
-.asciz "ERR: LBA in Extended Mode is not supported!\r\n"
+.asciz "ERR: LBA EXT RD not supported!\r\n"
 
 str_err_no_fat12:
-.asciz "ERR: Boot Filesystem is not FAT12\r\n"
+.asciz "ERR: Boot FS is not FAT12\r\n"
 
 str_err_load:
-.asciz "ERR: Failed reading sector into memory\r\n"
+.asciz "ERR: INT 13 failed\r\n"
+
+str_err_kernel:
+.asciz "ERR: Loaded kernel is not a valid image\r\n"
 
 disk_address_packet:
 .byte 0x10       /* size of packet */

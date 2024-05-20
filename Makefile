@@ -3,7 +3,6 @@ boot_image: mbr
 	mkfs.fat -F 12 -n "SYSTEM80" disk.img
 	dd if=MBR/mbr of=disk.img conv=notrunc
 	mcopy -i disk.img KERNEL/sysk80.bin "::sysk80.bin"
-	mcopy -i disk.img KERNEL/sysk80.bin "::sysk801.bin"
 
 mbr:
 	$(MAKE) -C MBR mbr
