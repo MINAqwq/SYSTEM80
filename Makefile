@@ -9,3 +9,8 @@ mbr:
 
 sysk80:
 	$(MAKE) -C KERNEL kernel
+
+.PHONY:
+clean:
+	$(MAKE) -C MBR clean
+	$(MAKE) -C KERNEL clean

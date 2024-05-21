@@ -18,3 +18,6 @@ boot.o
 
 kernel: $(OBJ)
 	$(LD) $(LDFLAGS) $(OBJ) -o sysk80.bin
+
+clean:
+	rm $(OBJ)
