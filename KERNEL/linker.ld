@@ -7,6 +7,7 @@ SECTIONS
         .text :
         {
                 *(.meta)
+                *(.gdt)
                 *(.text)
                 *(.data)
         }
