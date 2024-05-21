@@ -114,15 +114,12 @@ fat_load_root_dir:
         call print_str
 
         /* fat count * sector per fat = sector of root */
-        //movb (fat_header_fco), %al
+        movb (fat_header_fco), %al
+        mulw (fat_header_spf)
 
-        //mul (fat_header_spf)
+        add (fat_header_rss), %al
 
-        //add (fat_header_rss), %al
-
-        //movw %ax, disk_address_packet_lower_lba
-
-        movw $19, disk_address_packet_lower_lba
+        movw %ax, disk_address_packet_lower_lba
 
         mov $disk_address_packet, %si
 
@@ -247,7 +244,7 @@ str_err_kernel:
 disk_address_packet:
 .byte 0x10       /* size of packet */
 .byte 0x00       /* padding ig */
-.word 0x0004     /* number of sectors to transfer */
+.word 0x0002     /* number of sectors to transfer */
 disk_address_packet_store_addr:
 .long 0x0500     /* address where our shit gets stored */
 disk_address_packet_lower_lba:
