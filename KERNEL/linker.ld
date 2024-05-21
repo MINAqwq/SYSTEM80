@@ -4,11 +4,22 @@ OUTPUT_FORMAT(binary)
 SECTIONS
 {
         . = 0x500;
-        .text :
-        {
+        .text : {
                 *(.meta)
                 *(.gdt)
                 *(.text)
-                *(.data)
         }
+
+        .rodata : {
+		*(.rodata)
+	}
+ 
+	.data : {
+		*(.data)
+	}
+ 
+	.bss : {
+		*(COMMON)
+		*(.bss)
+	}
 }

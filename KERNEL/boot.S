@@ -3,6 +3,8 @@
 .globl _gdtr
 .globl _gdt_load
 
+.extern kernel_main
+
 .section .meta
 _kernel_entry:
 /* kernel magic */
@@ -38,13 +40,11 @@ protected_mode:
         mov  %ax, %ss
 
 .code32
-        /* test 32bit environemnt */
-        mov $0xFAAF3333, %eax
-        push %eax
-        pop %ebx
-
+        /* green a indicates everything's sane */
+        movw $0x0241, 0xB8000
+        call kernel_main
         hlt
-        jmp .
+
 .code16
 a20_failed:
         hlt
