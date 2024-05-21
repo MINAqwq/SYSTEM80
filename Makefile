@@ -1,4 +1,4 @@
-boot_image: mbr
+boot_image: mbr sysk80
 	dd if=/dev/zero of=disk.img bs=512 count=2880
 	mkfs.fat -F 12 -n "SYSTEM80" disk.img
 	dd if=MBR/mbr of=disk.img conv=notrunc
@@ -7,5 +7,5 @@ boot_image: mbr
 mbr:
 	$(MAKE) -C MBR mbr
 
-boot80:
-	$(MAKE) -C BOOT boot80
+sysk80:
+	$(MAKE) -C KERNEL kernel
