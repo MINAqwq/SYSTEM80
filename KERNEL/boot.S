@@ -19,6 +19,8 @@ _kernel_entry:
 protected_mode:
         call a20_enable
         call gdt_load
+
+        /* enable protected mode */
         mov  %cr0, %eax
         or   $1, %al
         mov  %eax, %cr0
@@ -27,6 +29,7 @@ protected_mode:
         jmp  $0x08, $.reload
 
 .reload:
+        /* reload segment register */
         mov  $0x10, %ax
         mov  %ax, %ds
         mov  %ax, %es
@@ -35,6 +38,7 @@ protected_mode:
         mov  %ax, %ss
 
 .code32
+        /* test 32bit environemnt */
         mov $0xFAAF3333, %eax
         push %eax
         pop %ebx
@@ -46,21 +50,25 @@ a20_failed:
         hlt
 
 a20_enable:
+        /* A20-Gate support */
         mov  $0x2403, %ax
         int  $0x15
         jb   a20_failed
         test %ah, %ah
         jnz  a20_failed
         
+        /* A20-Gate status */
         mov  $0x2402, %ax
         int  $0x15
         jb   a20_failed
         test %ah, %ah
         jnz  a20_failed
         
+        /* check if already activated */
         test %ah, %ah
         jz   a20_activated
         
+        /* activate */
         mov  $0x2401, %ax
         int  $0x15
         jb   a20_failed
