@@ -40,8 +40,14 @@ protected_mode:
         mov  %ax, %ss
 
 .code32
-        /* green a indicates everything's sane */
-        movw $0x0241, 0xB8000
+        /* clear vga screen */
+        mov $0xB8000, %ecx
+.vga_clear:
+        mov $0x9F209F20, (%ecx)
+        add $4, %ecx
+        cmpl $0xB8F9B, %ecx
+        jne .vga_clear
+
         call kernel_main
         hlt
 

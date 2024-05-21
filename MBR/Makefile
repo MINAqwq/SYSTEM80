@@ -1,7 +1,9 @@
-AS=as
+TC=../Toolchain/i386-elf/bin/i386-elf
+
+AS=$(TC)-as
 ASFLAGS=-mx86-used-note=no
 
-LD=ld
+LD=$(TC)-ld
 LDFLAGS=-T linker.ld
 
 

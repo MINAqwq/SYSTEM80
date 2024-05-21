@@ -5,3 +5,6 @@ note
 *.bin
 
 mbr
+
+Toolchain/dl_tmp
+Toolchain/i386-elf

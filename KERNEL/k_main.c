@@ -3,5 +3,5 @@
 void
 kernel_main(void)
 {
-	kernel_hlt();
+	cpu_hlt();
 }

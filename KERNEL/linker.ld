@@ -1,5 +1,6 @@
 ENTRY(_kernel_entry)
 OUTPUT_FORMAT(binary)
+OUTPUT_ARCH(i386)
 
 SECTIONS
 {

@@ -1,16 +1,18 @@
-CC=cc
+TC=../Toolchain/i386-elf/bin/i386-elf
+
+CC=$(TC)-gcc
 CFLAGS=-std=c89 -O2 -Wall -Wextra -Werror -ansi -nostdlib -ffreestanding
 
-AS=as
+AS=$(TC)-as
 ASFLAGS=-mx86-used-note=no
 
-LD=ld
+LD=$(TC)-ld
 LDFLAGS=-T linker.ld -nostdlib
 
 OBJ=\
-boot.o \
+k_boot.o \
 k_main.o \
-x86.o
+k_x86.o
 
 %.o: %.S
 	$(AS) $(ASFLAGS) $< -o $@
